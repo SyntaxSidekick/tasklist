@@ -5,6 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: process.env.VITE_DEMO_MODE === 'true' ? '/tasklist/' : '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

@@ -197,6 +197,18 @@ export default function DashboardLayout() {
           </div>
         </header>
 
+        {/* Demo Mode Banner */}
+        {import.meta.env.VITE_DEMO_MODE === 'true' && (
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-b border-primary/20 px-4 py-3">
+            <div className="flex items-center justify-center gap-2 text-sm">
+              <span className="font-semibold text-primary">🚀 Demo Mode</span>
+              <span className="text-text-muted">
+                All data is stored locally in your browser. Try creating tasks, projects, and using the voice assistant!
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto custom-scrollbar">
           <Outlet />

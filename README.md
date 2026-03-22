@@ -1,8 +1,16 @@
-# Sintacks Task Manager
+# Syntax Sidekick Task Manager
 
 A **full-stack Todoist-style task manager** built for **shared hosting (LAMP stack)** with a modern React + TypeScript frontend and PHP + MySQL backend.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
+## 🚀 Live Demo
+
+**[Try the Demo →](https://syntaxsidekick.github.io/tasklist/)**
+
+*Demo mode runs entirely in your browser using localStorage - no backend required!*
+
+---
 
 ## Features
 

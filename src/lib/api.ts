@@ -10,8 +10,10 @@ import type {
   PomodoroStats, 
   Notification 
 } from '@/types';
+import { demoApi } from './demo-api';
 
 const API_BASE_URL = '/api';
+const IS_DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
 class ApiClient {
   private async request<T>(
@@ -94,7 +96,7 @@ class ApiClient {
 }
 
 export const api = new ApiClient();
-
+IS_DEMO_MODE ? demoApi.auth : 
 // Auth API
 export const authApi = {
   register: (data: { email: string; password: string; name: string }) =>
@@ -106,14 +108,25 @@ export const authApi = {
 };
 
 // Tasks API
-export const tasksApi = {
+export const tasksApi = IS_DEMO_MODE ? {
+  ...demoApi.tasks,
+  getAll: demoApi.tasks.getAll,
+  getById: (id: number) => demoApi.tasks.getAll().then(res => ({ 
+    success: true, 
+    data: { task: res.data?.tasks.find((t: Task) => t.id === id) } 
+  })),
+  complete: (id: number) => demoApi.tasks.toggle(id),
+  uncomplete: (id: number) => demoApi.tasks.toggle(id),
+  reorder: async () => ({ success: true }), // Not implemented in demo
+  getByProject: demoApi.tasks.getByProject,
+} : {
   getAll: (params?: { project_id?: number; section_id?: number; completed?: number }) => {
     const query = new URLSearchParams(params as any).toString();
     return api.get<{ tasks: Task[] }>(`/tasks${query ? `?${query}` : ''}`);
   },
   getToday: () => api.get<{ tasks: Task[] }>('/tasks/today'),
   getUpcoming: () => api.get<{ tasks: Task[] }>('/tasks/upcoming'),
-  getById: (id: number) => api.get<{ task: Task }>(`/tasks/${id}`),
+  getById: (id: number) => IS_DEMO_MODE ? demoApi.projects : api.get<{ task: Task }>(`/tasks/${id}`),
   create: (data: any) => api.post<{ task: Task }>('/tasks', data),
   update: (id: number, data: any) => api.put<{ task: Task }>(`/tasks/${id}`, data),
   complete: (id: number) => api.patch<{ task: Task }>(`/tasks/${id}/complete`),
