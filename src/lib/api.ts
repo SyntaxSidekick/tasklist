@@ -96,9 +96,9 @@ class ApiClient {
 }
 
 export const api = new ApiClient();
-IS_DEMO_MODE ? demoApi.auth : 
+
 // Auth API
-export const authApi = {
+export const authApi = IS_DEMO_MODE ? demoApi.auth : {
   register: (data: { email: string; password: string; name: string }) =>
     api.post<{ user: User; token: string }>('/auth/register', data),
   login: (data: { email: string; password: string }) =>
